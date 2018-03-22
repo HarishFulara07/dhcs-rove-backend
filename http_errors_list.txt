@@ -1,0 +1,2 @@
+512 - User already signed up
+513 - Invalid login credentials

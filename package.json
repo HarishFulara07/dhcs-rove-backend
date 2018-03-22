@@ -1,0 +1,23 @@
+{
+  "name": "dhcs-rove",
+  "version": "1.0.0",
+  "description": "DHCS Course Project Backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Express",
+    "RestAPI",
+    "MongoDB",
+    "Mongoose",
+    "Rove"
+  ],
+  "author": "Harish Fulara (harish14143@iiitd.ac.in)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.11"
+  }
+}
