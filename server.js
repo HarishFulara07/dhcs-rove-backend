@@ -35,6 +35,7 @@ app.get('/', function(req, res){
 // Require Rove routes
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/profile.routes.js')(app);
+require('./app/routes/like.routes.js')(app);
 
 // listen for requests
 app.listen(3000, function(){
