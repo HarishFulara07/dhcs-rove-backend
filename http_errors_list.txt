@@ -1,2 +1,5 @@
-512 - User already signed up
+500 - Internal Server Error (Unable to write to DB)
+512 - User already signed up / already exists
 513 - Invalid login credentials
+514 - Failed to upload image
+515 - User doesn't exist
