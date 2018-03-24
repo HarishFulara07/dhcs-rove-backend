@@ -15,7 +15,10 @@ var PostSchema = mongoose.Schema({
     pictures_desc: String,
     note: String,
     location: String,
-    views_count: Number
+    views_count: {
+        type: Number,
+        default: 0
+    }
 }, {
     timestamps: true
 });

@@ -1,12 +1,12 @@
 var Profile = require('../models/profile.model.js');
 
 var multer = require('multer');
-var path = require('path')
+var path = require('path');
 
 function getProfileImageDir() {
     var profileImageDir = ['/uploads', 'images', 'profile'].join(path.sep);
     return __dirname.split(path.sep).slice(0, -2).join(path.sep) + profileImageDir;
-}
+};
 
 function saveProfileDetailsToDb(res, profile, isImageUploadFailed = false) {
     profile.save(function(err, data) {
@@ -19,7 +19,7 @@ function saveProfileDetailsToDb(res, profile, isImageUploadFailed = false) {
             res.status(200).send({msg: "Profile details saved successfully."});
         }
     });
-}
+};
 
 // Save user's profile details.
 exports.saveProfile = function(req, res) {
