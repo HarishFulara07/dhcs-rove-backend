@@ -9,4 +9,11 @@ module.exports = function(app) {
 
     // Save user's profile details.
     app.post('/profile/:userId/:firstName/:lastName/:isProfilePicPresent', profile.saveProfile);
+
+    // Get user profile details.
+    // app.get('/profile/:userId', profile.getProfileInfo);
+
+    // TODO
+    // Get user profile details from diary.
+    // Get user profile ddtails from post.
 }

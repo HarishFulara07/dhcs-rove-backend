@@ -6,3 +6,4 @@
 516 - Invalid diary id
 517 - No diary found for the search query
 518 - Invalid post type
+519 - Relationship doesn't exist
