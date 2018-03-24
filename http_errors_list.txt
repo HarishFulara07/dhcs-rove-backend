@@ -3,3 +3,5 @@
 513 - Invalid login credentials
 514 - Failed to upload image
 515 - User doesn't exist
+516 - Invalid diary id
+517 - No diary found for the search query
