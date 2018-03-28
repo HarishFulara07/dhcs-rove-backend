@@ -150,3 +150,21 @@ exports.updateProfilePicture = function(req, res) {
         }
     });
 };
+
+// Get user profile details.
+exports.getProfileInfo = function(req, res) {
+    var userId = req.params.userId;
+
+    Profile.findOne({user_id: userId}, function (err, profile) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send({msg: "Could not retrieve user profile."});
+        }
+        // Check if the user exists.
+        if (profile == null || profile.length == 0) {
+            res.status(515).send({msg: "User doesn't exist."});
+        } else {
+            res.status(200).send({msg: "User profile fetched successfully.", profile: profile})
+        }
+    });
+}

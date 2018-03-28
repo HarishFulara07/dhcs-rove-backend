@@ -11,7 +11,7 @@ module.exports = function(app) {
     app.post('/profile/:userId/:firstName/:lastName/:isProfilePicPresent', profile.saveProfile);
 
     // Get user profile details.
-    // app.get('/profile/:userId', profile.getProfileInfo);
+    app.get('/profile/:userId', profile.getProfileInfo);
 
     // TODO
     // Get user profile details from diary.
