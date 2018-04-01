@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 // create express app
 var app = express();
@@ -12,7 +13,6 @@ app.use(bodyParser.json())
 
 // Configuring the database
 var dbConfig = require('./config/database.config.js');
-var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
@@ -42,6 +42,6 @@ require('./app/routes/comment.routes.js')(app);
 require('./app/routes/relationship.routes.js')(app);
 
 // listen for requests
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log("Server is listening on port 3000");
 });
