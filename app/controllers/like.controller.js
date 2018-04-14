@@ -11,9 +11,9 @@ exports.postAddLike = function (req, res) {
     like.save(function(err, data) {
         if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while liking the post."});
+            res.status(500).send({msg: "Some error occurred while liking the post.", res: false});
         } else {
-        	res.status(200).send({msg: "Post liked successfully."});
+        	res.status(200).send({msg: "Post liked successfully.", res: true});
         }
     });
 };
@@ -26,9 +26,9 @@ exports.postRemoveLike = function (req, res) {
 	Like.remove({post_id: postId, user_id: userId}, function (err) {
 		if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while unliking the post."});
+            res.status(500).send({msg: "Some error occurred while unliking the post.", res: false});
         } else {
-        	res.status(200).send({msg: "Post unliked successfully."});
+        	res.status(200).send({msg: "Post unliked successfully.", res: true});
         }
 	});
 };
@@ -40,9 +40,9 @@ exports.getPostNumLikes = function (req, res) {
 	Like.count({post_id: postId}, function (err, count) {
 		if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while retrieving likes on the post."});
+            res.status(500).send({msg: "Some error occurred while retrieving likes on the post.", res: false});
         } else {
-        	res.status(200).send({msg: "Likes on post retrieved successfully.", n_likes: count});
+        	res.status(200).send({msg: "Likes on post retrieved successfully.", n_likes: count, res: true});
         }
 	});
 };

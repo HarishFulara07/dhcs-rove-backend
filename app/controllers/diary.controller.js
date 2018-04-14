@@ -13,11 +13,11 @@ function saveDiaryDetailsToDb(res, diary, isImageUploadFailed = false) {
     diary.save(function(err, data) {
         if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while saving diary."});
+            res.status(500).send({msg: "Some error occurred while saving diary.", res: false});
         } else if (isImageUploadFailed) {
-            res.status(514).send({msg: "Diary saved but failed to save cover picture.", diary_id: diary._id});
+            res.status(514).send({msg: "Diary saved but failed to save cover picture.", diary_id: diary._id, res: false});
         } else {
-            res.status(200).send({msg: "Diary saved successfully.", diary_id: diary._id});
+            res.status(200).send({msg: "Diary saved successfully.", diary_id: diary._id, res: true});
         }
     });
 };
@@ -77,9 +77,9 @@ exports.searchDiaries = function (req, res) {
 
 	Diary.find({title: {"$regex": searchQuery, "$options": "i" }}, function (err, data) {
     	if (data == null || data.length == 0) {
-    		res.status(517).send({msg: "No diary found."});
+    		res.status(517).send({msg: "No diary found.", res: false});
     	} else {
-    		res.status(200).send({msg: "Diaries found.", search_results: data});
+    		res.status(200).send({msg: "Diaries found.", search_results: data, res: true});
     	}
     });
 };
@@ -92,16 +92,16 @@ exports.deleteDiary = function (req, res) {
         if(err) {
             console.log(err);
             if(err.kind === 'ObjectId') {
-                return res.status(404).send({msg: "Diary not found with id " + diaryId});                
+                return res.status(404).send({msg: "Diary not found with id " + diaryId, res: false});                
             }
-            return res.status(500).send({msg: "Could not delete diary with id " + diaryId});
+            return res.status(500).send({msg: "Could not delete diary with id " + diaryId, res: false});
         }
 
         if(!diary) {
-            return res.status(404).send({msg: "Diary not found with id " + diaryId});
+            return res.status(404).send({msg: "Diary not found with id " + diaryId, res: false});
         }
 
-        res.status(200).send({msg: "Diary deleted successfully!"});
+        res.status(200).send({msg: "Diary deleted successfully!", res: true});
     });
 };
 
@@ -111,9 +111,9 @@ exports.getDiary = function (req, res) {
 	
 	Diary.findOne({_id: diaryId}, function (err, data) {
     	if (data == null || data.length == 0) {
-    		res.status(500).send({msg: "Invalid diary id."});
+    		res.status(500).send({msg: "Invalid diary id.", res: false});
     	} else {
-    		res.status(200).send({msg: "Diary found.", diary: data});
+    		res.status(200).send({msg: "Diary found.", diary: data, res: true});
     	}
     });
 };
@@ -127,9 +127,9 @@ exports.getDiaryWithPosts = function (req, res) {
     .exec((err, diary) => {
     	if (err) {
     		console.log(err);
-    		res.status(500).send({msg: "Unable to get posts in the diary."});
+    		res.status(500).send({msg: "Unable to get posts in the diary.", res: false});
     	}
-        res.status(200).send({msg: "Posts fetched successfully.", diary: diary});
+        res.status(200).send({msg: "Posts fetched successfully.", diary: diary, res: true});
         diary.save();
         diary.markModified('post_ids');
     })

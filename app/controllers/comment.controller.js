@@ -12,9 +12,9 @@ exports.postAddComment = function (req, res) {
     comment.save(function(err, data) {
         if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while commenting on the post."});
+            res.status(500).send({msg: "Some error occurred while commenting on the post.", res: false});
         } else {
-        	res.status(200).send({msg: "Commented on post successfully.", comment_id: data._id});
+        	res.status(200).send({msg: "Commented on post successfully.", comment_id: data._id, res: true});
         }
     });
 };
@@ -26,9 +26,9 @@ exports.postRemoveComment = function (req, res) {
 	Comment.remove({_id: commentId}, function (err) {
 		if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while uncommenting on the post."});
+            res.status(500).send({msg: "Some error occurred while uncommenting on the post.", res: false});
         } else {
-        	res.status(200).send({msg: "Post uncommented successfully."});
+        	res.status(200).send({msg: "Post uncommented successfully.", res: true});
         }
 	});
 };
@@ -40,9 +40,9 @@ exports.getPostComments = function (req, res) {
 	Comment.find({post_id: postId}, function (err, data) {
 		if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while retrieving comments on the post."});
+            res.status(500).send({msg: "Some error occurred while retrieving comments on the post.", res: false});
         } else {
-        	res.status(200).send({msg: "Comments on post retrieved successfully.", comments: data});
+        	res.status(200).send({msg: "Comments on post retrieved successfully.", comments: data, res: true});
         }
 	});
 };

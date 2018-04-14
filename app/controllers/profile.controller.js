@@ -12,11 +12,11 @@ function saveProfileDetailsToDb(res, profile, isImageUploadFailed = false) {
     profile.save(function(err, data) {
         if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while saving profile details."});
+            res.status(500).send({msg: "Some error occurred while saving profile details.", res: false});
         } else if (isImageUploadFailed) {
-            res.status(514).send({msg: "Profile name saved but failed to save profile picture."});
+            res.status(514).send({msg: "Profile name saved but failed to save profile picture.", res: false});
         } else {
-            res.status(200).send({msg: "Profile details saved successfully."});
+            res.status(200).send({msg: "Profile details saved successfully.", res: true});
         }
     });
 };
@@ -34,7 +34,7 @@ exports.saveProfile = function(req, res) {
     // Check if the user already exists.
     Profile.count({user_id: userId}, function (err, count) {
         if (count > 0) {
-            return res.status(512).send({msg: "User already exists."});
+            return res.status(512).send({msg: "User already exists.", res: false});
         } else {
             if (isProfilePicPresent == 'true') {
                 // We will use disk storage engine to store uploaded images on disk.
@@ -86,7 +86,7 @@ exports.updateProfileName = function(req, res) {
     Profile.findOne({user_id: userId}, function (err, profile) {
         // Check if the user exists.
         if (profile == null || profile.length == 0) {
-            return res.status(515).send({msg: "User doesn't exist."});
+            return res.status(515).send({msg: "User doesn't exist.", res: false});
         } else {
             profile.firstname = firstName;
             profile.lastname = lastName;
@@ -94,9 +94,9 @@ exports.updateProfileName = function(req, res) {
 
             profile.save(function(err, data){
                 if(err) {
-                    res.status(500).send({msg: "Could not update user's profile name."});
+                    res.status(500).send({msg: "Could not update user's profile name.", res: false});
                 } else {
-                    res.status(200).send({msg: "Profile name successfully updated."});
+                    res.status(200).send({msg: "Profile name successfully updated.", res: true});
                 }
             });
         }
@@ -112,7 +112,7 @@ exports.updateProfilePicture = function(req, res) {
     Profile.findOne({user_id: userId}, function (err, profile) {
         // Check if the user exists.
         if (profile == null || profile.length == 0) {
-            return res.status(515).send({msg: "User doesn't exist."});
+            return res.status(515).send({msg: "User doesn't exist.", res: false});
         } else {
             // We will use disk storage engine to store uploaded images on disk.
             storage = multer.diskStorage({
@@ -133,15 +133,15 @@ exports.updateProfilePicture = function(req, res) {
             upload(req, res, function(err) {
                 if (err) {
                     console.log(err);
-                    return res.status(514).send("Failed to update profile picture.");
+                    return res.status(514).send({msg: "Failed to update profile picture.", res: false});
                 } else {
                     profile.profile_picture_name = imageFileName
                     profile.save(function(err, data){
                         if(err) {
                             console.log(err);
-                            res.status(500).send({msg: "Could not update user's profile picture."});
+                            res.status(500).send({msg: "Could not update user's profile picture.", res: false});
                         } else {
-                            res.status(200).send({msg: "Profile picture updated successfully."});
+                            res.status(200).send({msg: "Profile picture updated successfully.", res: true});
                             console.log("Profile Picture '" + imageFileName + "' updated successfully.");
                         }
                     });
@@ -158,13 +158,13 @@ exports.getProfileInfo = function(req, res) {
     Profile.findOne({user_id: userId}, function (err, profile) {
         if (err) {
             console.log(err);
-            return res.status(500).send({msg: "Could not retrieve user profile."});
+            return res.status(500).send({msg: "Could not retrieve user profile.", res: false});
         }
         // Check if the user exists.
         if (profile == null || profile.length == 0) {
-            res.status(515).send({msg: "User doesn't exist."});
+            res.status(515).send({msg: "User doesn't exist.", res: false});
         } else {
-            res.status(200).send({msg: "User profile fetched successfully.", profile: profile})
+            res.status(200).send({msg: "User profile fetched successfully.", profile: profile, res: true})
         }
     });
 }

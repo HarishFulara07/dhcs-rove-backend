@@ -11,9 +11,9 @@ exports.create = function (req, res) {
     relationship.save(function(err, data) {
         if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while creating relationship."});
+            res.status(500).send({msg: "Some error occurred while creating relationship.", res: false});
         } else {
-        	res.status(200).send({msg: "Relationship created successfully."});
+        	res.status(200).send({msg: "Relationship created successfully.", res: true});
         }
     });
 };
@@ -27,15 +27,15 @@ exports.update = function (req, res) {
 	Relationship.findOne({user_one_id: userOneId, user_two_id: userTwoId}, function (err, rel) {
         if (err) {
         	console.log(err);
-            res.status(500).send({msg: "Some error occurred while finding relationship."});
+            res.status(500).send({msg: "Some error occurred while finding relationship.", res: false});
         } else {
         	rel.status = status;
         	rel.save(function(err, data) {
         		if (err) {
         			console.log(err);
-            		res.status(500).send({msg: "Some error occurred while updating relationship."});
+            		res.status(500).send({msg: "Some error occurred while updating relationship.", res: false});
         		} else {
-        			res.status(200).send({msg: "Relationship updated successfully."});
+        			res.status(200).send({msg: "Relationship updated successfully.", res: true});
         		}
         	});
         }
@@ -50,9 +50,9 @@ exports.delete = function (req, res) {
 	Relationship.remove({user_one_id: userOneId, user_two_id: userTwoId}, function (err) {
 		if (err) {
 			console.log(err);
-            res.status(500).send({msg: "Some error occurred while deleting relationship."});
+            res.status(500).send({msg: "Some error occurred while deleting relationship.", res: false});
 		} else {
-			res.status(200).send({msg: "Relationship deleted successfully."});
+			res.status(200).send({msg: "Relationship deleted successfully.", res: true});
 		}
 	});
 };
@@ -64,9 +64,9 @@ exports.requestsRecv = function (req, res) {
 	Relationship.find({user_two_id: userId}, function (err, data) {
         if (err) {
         	console.log(err);
-            res.status(500).send({msg: "Some error occurred."});
+            res.status(500).send({msg: "Some error occurred.", res: false});
         } else {
-       		res.status(200).send({msg: "Got relationship requests.", requests_recv: data});	
+       		res.status(200).send({msg: "Got relationship requests.", requests_recv: data, res: true});	
        	}
     });
 };
@@ -78,9 +78,9 @@ exports.requestsSent = function (req, res) {
 	Relationship.find({user_one_id: userId}, function (err, data) {
         if (err) {
         	console.log(err);
-            res.status(500).send({msg: "Some error occurred."});
+            res.status(500).send({msg: "Some error occurred.", res: false});
         } else {
-       		res.status(200).send({msg: "Got relationship requests.", requests_sent: data});	
+       		res.status(200).send({msg: "Got relationship requests.", requests_sent: data, res: true});	
        	}
     });
 };
@@ -92,9 +92,9 @@ exports.getFollowers = function (req, res) {
 	Relationship.find({user_two_id: userId, status: 1}, function (err, data) {
         if (err) {
         	console.log(err);
-            res.status(500).send({msg: "Some error occurred."});
+            res.status(500).send({msg: "Some error occurred.", res: false});
         } else {
-       		res.status(200).send({msg: "Got followers.", followers: data});	
+       		res.status(200).send({msg: "Got followers.", followers: data, res: true});	
        	}
     });
 };
@@ -106,9 +106,9 @@ exports.getFollowings = function (req, res) {
 	Relationship.find({user_one_id: userId, status: 1}, function (err, data) {
         if (err) {
         	console.log(err);
-            res.status(500).send({msg: "Some error occurred."});
+            res.status(500).send({msg: "Some error occurred.", res: false});
         } else {
-       		res.status(200).send({msg: "Got followings.", followings: data});	
+       		res.status(200).send({msg: "Got followings.", followings: data, res: true});	
        	}
     });
 };

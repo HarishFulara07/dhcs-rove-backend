@@ -14,9 +14,9 @@ function savePostToDb(res, post) {
     post.save(function(err, data) {
         if (err) {
             console.log(err);
-            res.status(500).send({msg: "Some error occurred while saving post."});
+            res.status(500).send({msg: "Some error occurred while saving post.", res: false});
         } else {
-            res.status(200).send({msg: "Post saved successfully.", post_id: post._id});
+            res.status(200).send({msg: "Post saved successfully.", post_id: post._id, res: true});
         }
     });
 };
@@ -60,7 +60,7 @@ exports.createPost = function (req, res) {
         upload(req, res, function(err) {
             if (err) {
                 console.log(err);
-                res.status(514).send({msg: "Post pictures upload failed."});
+                res.status(514).send({msg: "Post pictures upload failed.", res: false});
             } else {
                 for (var i = 0; i < nPictures; i++) {
                     picturesName.push(req.files[i].filename);
@@ -79,10 +79,10 @@ exports.createPost = function (req, res) {
         post.save(function(err, data) {
             if (err) {
                 console.log(err);
-                res.status(500).send({msg: "Some error occurred while saving post."});
+                res.status(500).send({msg: "Some error occurred while saving post.", res: false});
             } else {
                 updateDiary(diaryId, post)
-                res.status(200).send({msg: "Post saved successfully.", post_id: post._id});
+                res.status(200).send({msg: "Post saved successfully.", post_id: post._id, res: true});
             }
         });
     } else if (postType == '3') {   // Location post.
@@ -92,14 +92,14 @@ exports.createPost = function (req, res) {
         post.save(function(err, data) {
             if (err) {
                 console.log(err);
-                res.status(500).send({msg: "Some error occurred while saving post."});
+                res.status(500).send({msg: "Some error occurred while saving post.", res: false});
             } else {
                 updateDiary(diaryId, post)
-                res.status(200).send({msg: "Post saved successfully.", post_id: post._id});
+                res.status(200).send({msg: "Post saved successfully.", post_id: post._id, res: true});
             }
         });
     } else {
-        res.status(518).send({msg: "Invalid post type."});
+        res.status(518).send({msg: "Invalid post type.", res: false});
     }
 };
 
@@ -109,9 +109,9 @@ exports.getPost = function (req, res) {
 
     Post.findOne({_id: postId}, function (err, data) {
         if (data == null || data.length == 0) {
-            res.status(500).send({msg: "Invalid post id."});
+            res.status(500).send({msg: "Invalid post id.", res: false});
         } else {
-            res.status(200).send({msg: "Post found.", post: data});
+            res.status(200).send({msg: "Post found.", post: data, res: true});
         }
     });
 };
@@ -124,15 +124,15 @@ exports.deletePost = function (req, res) {
         if(err) {
             console.log(err);
             if(err.kind === 'ObjectId') {
-                return res.status(404).send({msg: "Post not found with id " + postId});                
+                return res.status(404).send({msg: "Post not found with id " + postId, res: false});                
             }
-            return res.status(500).send({msg: "Could not delete post with id " + postId});
+            return res.status(500).send({msg: "Could not delete post with id " + postId, res: false});
         }
 
         if(!post) {
-            return res.status(404).send({msg: "Post not found with id " + postId});
+            return res.status(404).send({msg: "Post not found with id " + postId, res: false});
         }
 
-        res.status(200).send({msg: "Post deleted successfully!"});
+        res.status(200).send({msg: "Post deleted successfully!", res: true});
     });
 };
