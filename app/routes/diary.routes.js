@@ -7,11 +7,14 @@ module.exports = function(app) {
     // Update view count on a diary.
     app.post('/diary/views/:diaryId/:viewsCount', diary.updateDiaryViewsCount);
 
-    // Search diaries.
-	app.get('/diary/search/:searchQuery', diary.searchDiaries);
+    // Search trending diaries.
+	app.get('/diary/search/trending/:searchQuery', diary.searchTrendingDiaries);
 
     // Get top 20 recent diaries.
     app.get('/diary/recent/', diary.getRecentDiaries);
+
+    // Search recent diaries.
+    app.get('/diary/search/recent/:searchQuery', diary.searchRecentDiaries);
 
     // Get top 20 trending diaries.
     app.get('/diary/trending/', diary.getTrendingDiaries);

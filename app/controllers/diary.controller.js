@@ -71,11 +71,11 @@ exports.createDiary = function (req, res) {
     }
 };
 
-// Search for diaries.
-exports.searchDiaries = function (req, res) {
+exports.searchRecentDiaries = function (req, res) {
 	var searchQuery = req.params.searchQuery;
 
-	Diary.find({title: {"$regex": searchQuery, "$options": "i" }}, function (err, data) {
+	Diary.find({title: {"$regex": searchQuery, "$options": "i" }})
+        .sort({_id: -1}).limit(20).exec(function (err, data) {
     	if (data == null || data.length == 0) {
     		res.status(517).send({msg: "No diary found.", res: false});
     	} else {
@@ -86,6 +86,19 @@ exports.searchDiaries = function (req, res) {
 
 exports.getRecentDiaries = function (req, res) {
     Diary.find({}).sort({_id: -1}).limit(20).exec(function (err, data) {
+        if (data == null || data.length == 0) {
+            res.status(517).send({msg: "No diary found.", res: false});
+        } else {
+            res.status(200).send({msg: "Diaries found.", search_results: data, res: true});
+        }
+    });
+};
+
+exports.searchTrendingDiaries = function (req, res) {
+    var searchQuery = req.params.searchQuery;
+
+    Diary.find({title: {"$regex": searchQuery, "$options": "i" }})
+        .sort({views_count: -1}).limit(20).exec(function (err, data) {
         if (data == null || data.length == 0) {
             res.status(517).send({msg: "No diary found.", res: false});
         } else {
