@@ -84,6 +84,58 @@ exports.searchDiaries = function (req, res) {
     });
 };
 
+exports.getRecentDiaries = function (req, res) {
+    Diary.find({}).sort({_id: -1}).limit(20).exec(function (err, data) {
+        if (data == null || data.length == 0) {
+            res.status(517).send({msg: "No diary found.", res: false});
+        } else {
+            res.status(200).send({msg: "Diaries found.", search_results: data, res: true});
+        }
+    });
+};
+
+exports.getTrendingDiaries = function (req, res) {
+    Diary.find({}).sort({views_count: -1}).limit(20).exec(function (err, data) {
+        if (data == null || data.length == 0) {
+            res.status(517).send({msg: "No diary found.", res: false});
+        } else {
+            res.status(200).send({msg: "Diaries found.", search_results: data, res: true});
+        }
+    });
+};
+
+exports.getRandomDiaries = function (req, res) {
+    Diary.findRandom({}, {}, {limit: 20}, function(err, data) {
+        if (data == null || data.length == 0) {
+            res.status(517).send({msg: "No diary found.", res: false});
+        } else {
+            res.status(200).send({msg: "Diaries found.", search_results: data, res: true});
+        }
+    });
+};
+
+exports.updateDiaryViewsCount = function(req, res) {
+    var diaryId = req.params.diaryId;
+    var viewsCount = req.params.viewsCount;
+
+    Diary.findOne({_id: diaryId}, function (err, diary) {
+        // Check if the diary exists.
+        if (diary == null || diary.length == 0) {
+            return res.status(404).send({msg: "Diary doesn't exist.", res: false});
+        } else {
+            diary.views_count += viewsCount;
+
+            diary.save(function(err, data){
+                if(err) {
+                    res.status(500).send({msg: "Unable to update view counts.", res: false});
+                } else {
+                    res.status(200).send({res: true});
+                }
+            });
+        }
+    });
+};
+
 // Delete diary.
 exports.deleteDiary = function (req, res) {
 	var diaryId = req.params.diaryId;
