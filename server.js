@@ -44,6 +44,7 @@ require('./app/routes/diary.routes.js')(app);
 require('./app/routes/post.routes.js')(app);
 require('./app/routes/comment.routes.js')(app);
 require('./app/routes/relationship.routes.js')(app);
+require('./app/routes/bookmark.routes.js')(app);
 
 // listen for requests
 app.listen(3000, function(){

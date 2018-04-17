@@ -118,7 +118,7 @@ exports.getTrendingDiaries = function (req, res) {
 };
 
 exports.getRandomDiaries = function (req, res) {
-    Diary.findRandom({}, {}, {limit: 20}, function(err, data) {
+    Diary.findRandom().limit(20).exec(function(err, data) {
         if (data == null || data.length == 0) {
             res.status(517).send({msg: "No diary found.", res: false});
         } else {

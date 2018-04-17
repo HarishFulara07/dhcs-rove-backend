@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var random = require('mongoose-simple-random');
+var random = require('mongoose-random');
 
 var PostSchema = mongoose.Schema({
     // _id is the post_id
@@ -42,7 +42,7 @@ var DiarySchema = mongoose.Schema({
     timestamps: true
 });
 
-DiarySchema.plugin(random);
+DiarySchema.plugin(random, {path: 'r'});
 
 module.exports.Post = mongoose.model('Post', PostSchema);
 module.exports.Diary = mongoose.model('Diary', DiarySchema);

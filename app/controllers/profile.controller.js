@@ -70,7 +70,7 @@ exports.saveProfile = function(req, res) {
             } else {
                 // Insert the profile details in the DB.
                 var profile = new Profile({user_id: userId, firstname: firstName,
-                    lastname: lastName});
+                    lastname: lastName, profile_picture_name: "default_user_img.jpg"});
                 saveProfileDetailsToDb(res, profile);
             }
         }
