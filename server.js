@@ -11,6 +11,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
+// Directory containing images.
+var imagesDir = require('path').join(__dirname, '/uploads');
+app.use(express.static(imagesDir));
+
 // Configuring the database
 var dbConfig = require('./config/database.config.js');
 
@@ -40,6 +44,7 @@ require('./app/routes/diary.routes.js')(app);
 require('./app/routes/post.routes.js')(app);
 require('./app/routes/comment.routes.js')(app);
 require('./app/routes/relationship.routes.js')(app);
+require('./app/routes/bookmark.routes.js')(app);
 
 // listen for requests
 app.listen(process.env.PORT || 3000, function(){
