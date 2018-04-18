@@ -1,8 +1,17 @@
 module.exports = function(app) {
     var diary = require('../controllers/diary.controller.js');
 
-    // Creata a diary.
+    // Create default diary.
+    app.post('/diary/create/default/:userId', diary.createDefaultDiary);
+
+    // Create a diary.
     app.post('/diary/create/:userId/:title/:visibility/:isCoverPicPresent', diary.createDiary);
+
+    // Upload image.
+    app.post('/diary/uploadcoverpicture', diary.uploadCoverPicture);
+
+    // Update a diary.
+    app.post('/diary/update/:diaryId/:title/:visibility/:isCoverPicPresent', diary.updateDiary);
 
     // Update view count on a diary.
     app.post('/diary/views/:diaryId/:viewsCount', diary.updateDiaryViewsCount);

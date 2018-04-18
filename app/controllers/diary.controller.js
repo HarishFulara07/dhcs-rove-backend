@@ -22,6 +22,19 @@ function saveDiaryDetailsToDb(res, diary, isImageUploadFailed = false) {
     });
 };
 
+// Create a default diary.
+exports.createDefaultDiary = function (req, res) {
+    var userId = req.params.userId;
+    var diaryTitle = "New Diary";
+    var diaryVisibility = 1;
+    var diary;
+
+    // Insert the diary details in the DB.
+    diary = new Diary({user_id: userId, title: diaryTitle,
+                visibility: diaryVisibility, cover_photo_name: ""});
+    saveDiaryDetailsToDb(res, diary);
+};
+
 // Create a diary.
 exports.createDiary = function (req, res) {
 	var userId = req.params.userId;
@@ -69,6 +82,97 @@ exports.createDiary = function (req, res) {
                     visibility: diaryVisibility});
         saveDiaryDetailsToDb(res, diary);
     }
+};
+
+exports.uploadCoverPicture = function (req, res) {
+    console.log(req);
+    var imageFileName;
+    
+    storage = multer.diskStorage({
+        // Folder where uploaded images will be stored.
+        destination: function(req, file, callback) {
+            callback(null, getDiaryCoverImageDir());
+        },
+        // Name with which an uploaded image will be stored.
+        filename: function(req, file, callback) {
+            imageFileName = userId + '_' + Date.now() + '_' + file.originalname;
+            callback(null, imageFileName);
+        }
+    });
+
+    // Create a multer object.
+    var upload = multer({storage: storage}).single('image');
+    upload(req, res, function(err) {
+        if (err) {
+            // console.log(err);
+            // // Insert the diary details in the DB.
+            // diary.title = diaryTitle;
+            // diary.visibility = diaryVisibility;
+            // saveDiaryDetailsToDb(res, diary, true);
+            console.log('err');
+        } else {
+            // // Insert the diary details in the DB.
+            // diary.title = diaryTitle;
+            // diary.visibility = diaryVisibility;
+            // diary.cover_photo_name = imageFileName;
+            // saveDiaryDetailsToDb(res, diary);
+            console.log("Diary Cover Picture '" + imageFileName + "' uploaded successfully.");
+        }
+    });
+};
+
+// Update a diary.
+exports.updateDiary = function (req, res) {
+    var diaryId = req.params.diaryId;
+    var diaryTitle = req.params.title;
+    var diaryVisibility = req.params.visibility;
+    var isCoverPicPresent = req.params.isCoverPicPresent;
+    var imageFileName;
+    var storage;
+    console.log(req);
+
+    Diary.findOne({_id: diaryId}, function (err, diary) {
+        if (diary == null || diary.length == 0) {
+            return res.status(515).send({msg: "Diary doesn't exist.", res: false});
+        } else if (isCoverPicPresent == 'true') {
+            // We will use disk storage engine to store uploaded images on disk.
+            storage = multer.diskStorage({
+                // Folder where uploaded images will be stored.
+                destination: function(req, file, callback) {
+                    callback(null, getDiaryCoverImageDir());
+                },
+                // Name with which an uploaded image will be stored.
+                filename: function(req, file, callback) {
+                    imageFileName = userId + '_' + Date.now() + '_' + file.originalname;
+                    callback(null, imageFileName);
+                }
+            });
+
+            // Create a multer object.
+            var upload = multer({storage: storage}).single('image');
+            upload(req, res, function(err) {
+                if (err) {
+                    console.log(err);
+                    // Insert the diary details in the DB.
+                    diary.title = diaryTitle;
+                    diary.visibility = diaryVisibility;
+                    saveDiaryDetailsToDb(res, diary, true);
+                } else {
+                    // Insert the diary details in the DB.
+                    diary.title = diaryTitle;
+                    diary.visibility = diaryVisibility;
+                    diary.cover_photo_name = imageFileName;
+                    saveDiaryDetailsToDb(res, diary);
+                    console.log("Diary Cover Picture '" + imageFileName + "' uploaded successfully.");
+                }
+            });
+        } else {
+            // Insert the diary details in the DB.
+            diary.title = diaryTitle;
+            diary.visibility = diaryVisibility;
+            saveDiaryDetailsToDb(res, diary);
+        }
+    });
 };
 
 exports.searchRecentDiaries = function (req, res) {
