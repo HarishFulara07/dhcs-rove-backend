@@ -6,7 +6,11 @@ var mongoose = require('mongoose');
 var app = express();
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ 
+	extended: true,
+	parameterLimit: 100000,
+    limit: '50mb'
+}))
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
